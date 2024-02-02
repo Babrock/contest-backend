@@ -18,7 +18,9 @@ import java.util.List;
 public class SchoolService {
     private final SchoolRepository schoolRepository;
 
-    public List<School> getSchools(String city){
+    public List<School> getSchools(){ return schoolRepository.findAll(); }
+
+    public List<School> getSchoolsByCity(String city){
         return schoolRepository.findAllByCity(city, School.class);
     }
 
@@ -59,5 +61,9 @@ public class SchoolService {
 
     public School saveSchool(School school){
         return schoolRepository.save(school);
+    }
+
+    public boolean existsById(Integer id) {
+        return schoolRepository.existsById(id);
     }
 }

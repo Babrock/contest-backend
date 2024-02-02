@@ -23,12 +23,13 @@ public class RSPOService {
     private final TitleService titleService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
-//    @PostConstruct
-//    public void updateData() {
-//        createAdmins();
-//        String rspoData = fetchRSPOData();
-//        convertStringToCsv(rspoData);
-//    }
+
+    @PostConstruct
+    public void updateData() {
+        createAdmins();
+        String rspoData = fetchRSPOData();
+        convertStringToCsv(rspoData);
+    }
 
     private void createAdmins(){
         User existingAdmin1 = userService.getUserByEmail("damian.rocha00@gmail.com");
@@ -83,10 +84,16 @@ public class RSPOService {
     private void createAndSaveSchools(int rowIndex, String[] schools){
             try{
                 School newSchool = createSchool(schools);
-                schoolService.saveSchool(newSchool);
+                if (!schoolExists(newSchool)) {
+                    schoolService.saveSchool(newSchool);
+                }
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.err.println("Error processing row: " + rowIndex);
             }
+    }
+
+    private boolean schoolExists(School school) {
+        return schoolService.existsById(school.getId());
     }
 
     private School createSchool(String[] cols){
@@ -108,6 +115,7 @@ public class RSPOService {
     }
 
     private String fetchRSPOData() {
+        long start = System.currentTimeMillis();
         String url = "https://rspo.gov.pl/api/Institution/Csv";
         String jsonBody = "{}";
         HttpHeaders headers = new HttpHeaders();
@@ -116,6 +124,8 @@ public class RSPOService {
         HttpEntity<String> entity = new HttpEntity<>(jsonBody, headers);
         RestTemplate restTemplate = new RestTemplate();
         var response = restTemplate.exchange(url, HttpMethod.POST, entity, byte[].class);
+        long end = System.currentTimeMillis();
+        System.out.println(end-start);
         return new String(response.getBody(), StandardCharsets.UTF_8);
     }
 
