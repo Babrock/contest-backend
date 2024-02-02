@@ -21,7 +21,7 @@ public class SchoolController {
     @GetMapping
     public List<School> getSchools(@PathVariable String city, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        return schoolService.getSchools(city);
+        return schoolService.getSchoolsByCity(city);
     }
 
     @GetMapping(params = "city")

@@ -23,12 +23,17 @@ public class RSPOService {
     private final TitleService titleService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
-//    @PostConstruct
-//    public void updateData() {
-//        createAdmins();
-//        String rspoData = fetchRSPOData();
-//        convertStringToCsv(rspoData);
-//    }
+    private final UtilsDataService utilsDataService;
+
+    @PostConstruct
+    public void updateData() {
+        if(!utilsDataService.isSchoolsDownloaded()){
+            createAdmins();
+            String rspoData = fetchRSPOData();
+            convertStringToCsv(rspoData);
+            utilsDataService.setIsSchoolsDownloaded(true);
+        }
+    }
 
     private void createAdmins(){
         User existingAdmin1 = userService.getUserByEmail("damian.rocha00@gmail.com");
@@ -89,6 +94,7 @@ public class RSPOService {
             }
     }
 
+
     private School createSchool(String[] cols){
         School school = new School();
         school.setName(cols[4]);
@@ -108,6 +114,7 @@ public class RSPOService {
     }
 
     private String fetchRSPOData() {
+        long start = System.currentTimeMillis();
         String url = "https://rspo.gov.pl/api/Institution/Csv";
         String jsonBody = "{}";
         HttpHeaders headers = new HttpHeaders();
@@ -116,6 +123,8 @@ public class RSPOService {
         HttpEntity<String> entity = new HttpEntity<>(jsonBody, headers);
         RestTemplate restTemplate = new RestTemplate();
         var response = restTemplate.exchange(url, HttpMethod.POST, entity, byte[].class);
+        long end = System.currentTimeMillis();
+        System.out.println(end-start);
         return new String(response.getBody(), StandardCharsets.UTF_8);
     }
 
