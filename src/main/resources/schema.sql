@@ -1,6 +1,13 @@
+drop database  contest;
+
 create database if not exists contest;
 
 use contest;
+
+create table if not exists utils(
+    id_utils int primary key,
+    is_schools_downloaded bool
+);
 
 create table if not exists voivodeships(
                                            id_voivodeship int auto_increment primary key,

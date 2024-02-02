@@ -23,12 +23,16 @@ public class RSPOService {
     private final TitleService titleService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final UtilsDataService utilsDataService;
 
     @PostConstruct
     public void updateData() {
-        createAdmins();
-        String rspoData = fetchRSPOData();
-        convertStringToCsv(rspoData);
+        if(!utilsDataService.isSchoolsDownloaded()){
+            createAdmins();
+            String rspoData = fetchRSPOData();
+            convertStringToCsv(rspoData);
+            utilsDataService.setIsSchoolsDownloaded(true);
+        }
     }
 
     private void createAdmins(){
@@ -84,17 +88,12 @@ public class RSPOService {
     private void createAndSaveSchools(int rowIndex, String[] schools){
             try{
                 School newSchool = createSchool(schools);
-                if (!schoolExists(newSchool)) {
-                    schoolService.saveSchool(newSchool);
-                }
+                schoolService.saveSchool(newSchool);
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.err.println("Error processing row: " + rowIndex);
             }
     }
 
-    private boolean schoolExists(School school) {
-        return schoolService.existsById(school.getId());
-    }
 
     private School createSchool(String[] cols){
         School school = new School();

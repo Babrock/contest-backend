@@ -1,3 +1,5 @@
+insert into utils(id_utils, is_schools_downloaded) values (1, false);
+
 insert into titles (name)
 values
     ('dr'),
