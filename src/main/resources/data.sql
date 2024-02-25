@@ -31,48 +31,48 @@ values
     ('ROLE_COORDINATOR_REGION'),
     ('ROLE_COORDINATOR_SCHOOL');
 
-LOAD DATA INFILE '/var/lib/mysql-files/voivodeships.csv'
-INTO TABLE voivodeships
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES;
-
-LOAD DATA INFILE '/var/lib/mysql-files/counties.csv'
-INTO TABLE counties
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES
-(id_county, name, id_voivodeship);
-
-LOAD DATA INFILE '/var/lib/mysql-files/communities.csv'
-INTO TABLE communities
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES;
-
-LOAD DATA INFILE '/var/lib/mysql-files/cities.csv'
-INTO TABLE cities
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES;
-
-LOAD DATA INFILE '/var/lib/mysql-files/categories.csv'
-INTO TABLE categories
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES;
-
-# LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/contestTables/regions.csv'
-# INTO TABLE regions
-# FIELDS TERMINATED BY ','
-# ENCLOSED BY '"'
-# LINES TERMINATED BY '\n'
-# IGNORE 1 LINES;
+-- LOAD DATA INFILE '/var/lib/mysql-files/voivodeships.csv'
+-- INTO TABLE voivodeships
+-- FIELDS TERMINATED BY ','
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+--
+-- LOAD DATA INFILE '/var/lib/mysql-files/counties.csv'
+-- INTO TABLE counties
+-- FIELDS TERMINATED BY ','
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES
+-- (id_county, name, id_voivodeship);
+--
+-- LOAD DATA INFILE '/var/lib/mysql-files/communities.csv'
+-- INTO TABLE communities
+-- FIELDS TERMINATED BY ','
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+--
+-- LOAD DATA INFILE '/var/lib/mysql-files/cities.csv'
+-- INTO TABLE cities
+-- FIELDS TERMINATED BY ','
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+--
+-- LOAD DATA INFILE '/var/lib/mysql-files/categories.csv'
+-- INTO TABLE categories
+-- FIELDS TERMINATED BY ','
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+--
+-- # LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/contestTables/regions.csv'
+-- # INTO TABLE regions
+-- # FIELDS TERMINATED BY ','
+-- # ENCLOSED BY '"'
+-- # LINES TERMINATED BY '\n'
+-- # IGNORE 1 LINES;
 
 -- LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/contestTables/schools.csv'
 -- INTO TABLE schools

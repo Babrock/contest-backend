@@ -28,4 +28,11 @@ public class VoivodeshipService {
         return voivodeshipRepository.findAllByIdIn(id);
     }
 
+    public Voivodeship saveVoivodeship(Voivodeship voivodeshipName){
+        return voivodeshipRepository.save(voivodeshipName);
+    }
+
+    public Voivodeship getVoivodeshipById(int id) {
+        return voivodeshipRepository.findById(id);
+    }
 }

@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "counties")
-@RequiredArgsConstructor
 @NoArgsConstructor
 public class County {
     @Id
@@ -27,4 +26,10 @@ public class County {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_region")
     private Region region;
+
+    public County(String name, Voivodeship voivodeship){
+        this.name = name;
+        this.voivodeship = voivodeship;
+    }
+
 }

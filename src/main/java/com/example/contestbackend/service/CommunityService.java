@@ -32,4 +32,7 @@ public class CommunityService {
         communityRepository.saveAll(communities);
     }
 
+    public Community saveCommunity(Community community) {
+        return communityRepository.save(community);
+    }
 }
