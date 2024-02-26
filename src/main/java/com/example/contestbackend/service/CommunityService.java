@@ -32,4 +32,19 @@ public class CommunityService {
         communityRepository.saveAll(communities);
     }
 
+    public Community saveCommunity(Community community) {
+        return communityRepository.save(community);
+    }
+
+    public Community getCommunityById(int id) {
+        return communityRepository.findById(id);
+    }
+
+    public Community getCommunityByName(String communityName) {
+        return communityRepository.findByName(communityName);
+    }
+
+    public List<Community> getCommunitiesByName(String communityName) {
+        return communityRepository.findAllByName(communityName);
+    }
 }

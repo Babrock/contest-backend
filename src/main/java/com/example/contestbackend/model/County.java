@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "counties")
-@RequiredArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class County {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

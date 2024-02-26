@@ -10,4 +10,8 @@ import java.util.List;
 @Repository
 public interface CityRepository extends JpaRepository<City, Integer> {
     List<DictionaryResponse> findAllByCommunityId(int id);
+
+    City findByName(String cityName);
+
+    City findByCommunityId(Integer id);
 }

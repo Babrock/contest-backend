@@ -3,6 +3,7 @@ package com.example.contestbackend.service;
 import com.example.contestbackend.dto.DictionaryResponse;
 import com.example.contestbackend.dto.projections.CityDictionary;
 import com.example.contestbackend.model.City;
+import com.example.contestbackend.model.Community;
 import com.example.contestbackend.repository.CityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,24 @@ import java.util.List;
 public class CityService {
 
     private final CityRepository cityRepository;
+    public City getCity(String cityName){
+        return cityRepository.findByName(cityName);
+    }
 
     public List<City> getCities(){
         return cityRepository.findAll();
     }
 
+    public City getCityByCommunityId(Integer id){
+        return cityRepository.findByCommunityId(id);
+    }
+
     public List<DictionaryResponse> getCitiesByCommunityId(Integer id){
         return cityRepository.findAllByCommunityId(id);
     }
+
+    public City saveCity(City city) {
+        return cityRepository.save(city);
+    }
+
 }

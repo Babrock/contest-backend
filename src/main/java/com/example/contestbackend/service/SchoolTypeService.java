@@ -22,4 +22,8 @@ public class SchoolTypeService {
     public SchoolType getSchoolType(int idSchoolType){
         return schoolTypeRepository.findById(idSchoolType).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST,"SchoolType not found"));
     }
+
+    public SchoolType saveSchoolType(SchoolType schoolType) {
+        return schoolTypeRepository.save(schoolType);
+    }
 }

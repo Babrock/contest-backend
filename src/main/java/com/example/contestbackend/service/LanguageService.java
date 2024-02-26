@@ -20,4 +20,8 @@ public class LanguageService {
         return languageRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                 "Language with given id not found"));
     }
+
+    public Language saveLanguage(Language language) {
+        return languageRepository.save(language);
+    }
 }

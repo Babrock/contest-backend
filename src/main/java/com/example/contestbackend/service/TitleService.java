@@ -21,4 +21,8 @@ public class TitleService {
     public Title getTitle(int idTitle){
         return titleRepository.findById(idTitle).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title not found"));
     }
+
+    public Title saveTitle(Title title) {
+        return titleRepository.save(title);
+    }
 }

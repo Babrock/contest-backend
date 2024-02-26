@@ -13,15 +13,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoleService {
 
-    private final RoleRepository repository;
+    private final RoleRepository roleRepository;
 
     public List<Role> getRoles() {
-        return repository.findAll();
+        return roleRepository.findAll();
     }
     public Role getRole(int id) {
-        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+        return roleRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                 "Role with given id not found"));
     }
 
-
+    public Role save(Role role) {
+        return roleRepository.save(role);
+    }
 }

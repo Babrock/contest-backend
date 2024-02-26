@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface CountyRepository extends JpaRepository<County, Integer> {
+    County findById(int id);
     List<DictionaryResponse> findAllByVoivodeshipId(Integer id);
 
     List<DictionaryResponse> findAllByVoivodeshipIdIn(List<Integer> voivodeshipIds);

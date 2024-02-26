@@ -9,13 +9,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CountyService {
     private final CountyRepository countyRepository;
-
     private final VoivodeshipService voivodeshipService;
+
+    public County getCountyById(int id){
+        return countyRepository.findById(id);
+    }
 
     public List<County> getCounties (){return countyRepository.findAll();}
 
@@ -54,4 +58,9 @@ public class CountyService {
     public List<County> getCountiesByRegionId(Integer id){
         return countyRepository.findByRegionId(id);
     }
+
+    public County saveCounty(County county) {
+        return countyRepository.save(county);
+    }
+
 }
