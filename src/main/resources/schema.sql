@@ -9,6 +9,7 @@ create table if not exists utils
     id_utils              int primary key,
     is_schools_downloaded bool
 );
+insert into utils(id_utils, is_schools_downloaded) values (1, false);
 
 create table if not exists voivodeships
 (

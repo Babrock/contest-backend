@@ -4,6 +4,7 @@ import com.example.contestbackend.model.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.hibernate.NonUniqueResultException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -29,19 +30,62 @@ public class RSPOService {
     private final VoivodeshipService voivodeshipService;
     private final CountyService countyService;
     private final CommunityService communityService;
+    private final CityService cityService;
+    private final LanguageService languageService;
+    private final SchoolTypeService schoolTypeService;
     private final PasswordEncoder passwordEncoder;
     private final UtilsDataService utilsDataService;
 
     @PostConstruct
     public void updateData() {
         if (!utilsDataService.isSchoolsDownloaded()) {
+            saveTitles();
+            saveLanguages();
+            saveTypesOfSchools();
+            saveRoles();
             createAdmins();
             List<CSVRecord> records = fetchRecordsFromRSPO();
             saveSchools(records);
             saveVoivodeships(records);
-            saveCounties(records);
-            saveCommunities(records);
+            saveCounties();
+            saveCommunities();
+            saveCities();
             utilsDataService.setIsSchoolsDownloaded(true);
+        }
+    }
+    private void saveTitles(){
+        String[] titles = {"dr", "inż", "mgr inż", "lic", "mgr"};
+        for (String titleName : titles) {
+            Title title = new Title();
+            title.setName(titleName);
+            titleService.saveTitle(title);
+        }
+    }
+
+    private void saveLanguages(){
+        String[] languages = {"angielski", "francuski", "hiszpański", "niemiecki", "włoski"};
+        for (String languageName : languages) {
+            Language language = new Language();
+            language.setName(languageName);
+            languageService.saveLanguage(language);
+        }
+    }
+
+    private void saveTypesOfSchools(){
+        String[] schoolsTypes = {"Podstawowa Klasy V", "Podstawowa Klasy VI", "Podstawowa Klasy VIII", "Licea Klasy I", "Technika Klasy I"};
+        for (String schoolTypeName : schoolsTypes) {
+            SchoolType schoolType = new SchoolType();
+            schoolType.setName(schoolTypeName);
+            schoolTypeService.saveSchoolType(schoolType);
+        }
+    }
+
+    private void saveRoles(){
+        String[] roles = {"ROLE_ADMIN", "ROLE_COORDINATOR", "ROLE_COORDINATOR_REGION", "ROLE_COORDINATOR_SCHOOL"};
+        for (String roleName : roles) {
+            Role role = new Role();
+            role.setName(roleName);
+            roleService.save(role);
         }
     }
 
@@ -112,55 +156,55 @@ public class RSPOService {
                 .forEach(voivodeshipService::saveVoivodeship);
     }
 
-    private void saveCounties(List<CSVRecord> records) {
-        Map<String, Integer> voivodeshipIdMap = new HashMap<>();
-        List<Voivodeship> voivodeships = voivodeshipService.getVoivodeships();
-        for (Voivodeship voivodeship : voivodeships) {
-            voivodeshipIdMap.put(voivodeship.getName(), voivodeship.getId());
-        }
+    private void saveCounties() {
+        List<School> schools = schoolService.getSchools();
         Set<String> counties = new HashSet<>();
-        for (CSVRecord record : records) {
-            String countyName = record.get("Powiat").replaceAll("\"|\"", "");
-            String voivodeshipName = record.get("Województwo").replaceAll("\"|\"", "");
-            counties.add(countyName);
-            Integer voivodeshipId = voivodeshipIdMap.get(voivodeshipName);
-
-            try{
-                Voivodeship voivodeship = voivodeshipService.getVoivodeshipById(voivodeshipId);
-                County county = new County();
-                county.setName(countyName);
-                county.setVoivodeship(voivodeship);
+        for (School school : schools) {
+            String countyName = school.getCounty();
+            String voivodeshipName = school.getVoivodeship();
+            Voivodeship voivodeship = voivodeshipService.getVoivodeshipByName(voivodeshipName);
+            if (!counties.contains(countyName)) {
+                County county = new County(countyName, voivodeship);
                 countyService.saveCounty(county);
-            } catch (NullPointerException e){
-                // Handle the case where voivodeshipId is null (log a warning, throw an exception, or handle it accordingly)
-                // Example: logger.warn("Voivodeship ID not found for voivodeshipName: {}", voivodeshipName);
+                counties.add(countyName);
             }
         }
     }
 
-    private void saveCommunities(List<CSVRecord> records) {
-        Map<String, Integer> countyIdMap = new HashMap<>();
-        List<County> counties = countyService.getCounties();
-        for (County county : counties) {
-            countyIdMap.put(county.getName(), county.getId());
-        }
+    private void saveCommunities() {
+        List<School> schools = schoolService.getSchools();
         Set<String> communities = new HashSet<>();
-        for (CSVRecord record : records) {
-            String communityName = record.get("Gmina").replaceAll("\"|\"", "");
-            String countyName = record.get("Powiat").replaceAll("\"|\"", "");
-            communities.add(communityName);
-            Integer countyId = countyIdMap.get(countyName);
-            try {
-                County county = countyService.getCountyById(countyId);
-                Community community = new Community();
-                community.setName(communityName);
-                community.setCounty(county);
+        for (School school : schools) {
+            String countyName = school.getCounty();
+            String communityName = school.getCommunity();
+            County county = countyService.getCountyByName(countyName);
+            if (!communities.contains(communityName)) {
+                Community community = new Community(communityName, county);
                 communityService.saveCommunity(community);
-            } catch (NullPointerException e){
-                // Handle the case where countyId is null (log a warning, throw an exception, or handle it accordingly)
+                communities.add(communityName);
             }
         }
     }
+
+    private void saveCities() {
+        List<School> schools = schoolService.getSchools();
+        Set<String> cities = new HashSet<>();
+        for (School school : schools) {
+            String cityName = school.getCity();
+            String communityName = school.getCommunity();
+            List<Community> communities = communityService.getCommunitiesByName(communityName);
+            for (Community community : communities) {
+                City existingCity = cityService.getCityByCommunityId(community.getId());
+                if(existingCity == null){
+                    City city = new City(cityName, community);
+                    cityService.saveCity(city);
+                    cities.add(cityName);
+                }
+            }
+        }
+    }
+
+
 
     private Optional<School> createSchool(String[] cols) {
         try {
