@@ -23,8 +23,8 @@ public class CityService {
         return cityRepository.findAll();
     }
 
-    public City getCityByCommunityId(Integer id){
-        return cityRepository.findByCommunityId(id);
+    public City getCityByNameAndCommunityId(String name, Integer id){
+        return cityRepository.findByNameAndCommunityId(name , id);
     }
 
     public List<DictionaryResponse> getCitiesByCommunityId(Integer id){

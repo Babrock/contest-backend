@@ -67,4 +67,30 @@ public class UserService implements UserDetailsService {
     public User saveUser(User user){
         return userRepository.save(user);
     }
+
+    public User updateUser(String email, UserDto userDto) {
+        User existingUser = userRepository.findUserByEmail(email);
+        if (existingUser == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!");
+        }
+        String newEmail = userDto.getEmail();
+        if (!newEmail.equals(existingUser.getEmail())) {
+            User userWithNewEmail = userRepository.findUserByEmail(newEmail);
+            if (userWithNewEmail != null && !userWithNewEmail.getEmail().equals(existingUser.getEmail())) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "User with the new email already exists!");
+            }
+            existingUser.setEmail(newEmail);
+        }
+        existingUser.setFirstname(userDto.getFirstname());
+        existingUser.setLastname(userDto.getLastname());
+        existingUser.setEmail(userDto.getEmail());
+        existingUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        existingUser.setPhone(userDto.getPhone());
+        existingUser.setWantsToRate(userDto.getWantsToRate());
+        existingUser.setEnabled(userDto.getEnabled());
+        existingUser.setTitle(titleService.getTitle(userDto.getTitle()));
+        existingUser.setRole(roleService.getRole(userDto.getRole()));
+        return userRepository.save(existingUser);
+    }
+
 }

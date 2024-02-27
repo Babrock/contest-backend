@@ -54,18 +54,9 @@ public class UserController {
         csvExportService.writeUsersToCsv(servletResponse.getWriter());
     }
 
-//    @PutMapping("/{id}")
-//    public User updateUser(@PathVariable Integer id, @RequestBody UserDto userDto){
-//        return userService.updateUser(new User(
-//                id,
-//                userDto.getFirstname(),
-//                userDto.getLastname(),
-//                userDto.getPassword(),
-//                userDto.getPhone(),
-//                userDto.getWantsToRate(),
-//                userDto.getIsAccepted(),
-//                userDto.getEmail()
-//        ));
-//    }
+    @PutMapping("/{email}")
+    public User updateUser(@PathVariable String email, @RequestBody UserDto userDto){
+        return userService.updateUser(email, userDto);
+    }
 
 }
