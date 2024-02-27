@@ -4,7 +4,6 @@ import com.example.contestbackend.model.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.hibernate.NonUniqueResultException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -194,7 +193,7 @@ public class RSPOService {
             String communityName = school.getCommunity();
             List<Community> communities = communityService.getCommunitiesByName(communityName);
             for (Community community : communities) {
-                City existingCity = cityService.getCityByCommunityId(community.getId());
+                City existingCity = cityService.getCityByNameAndCommunityId(cityName, community.getId());
                 if(existingCity == null){
                     City city = new City(cityName, community);
                     cityService.saveCity(city);

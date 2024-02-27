@@ -13,4 +13,5 @@ public class UserDto {
     private Boolean enabled;
     private String phone;
     private int role;
+
 }
