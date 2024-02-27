@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,5 +18,10 @@ public class EmailController {
     @PostMapping("/send")
     public void sendVerificationEmail(Principal principal,@RequestParam String to,@RequestParam String subject,@RequestParam String text) throws MessagingException {
         emailService.sendHtmlMail(principal.getName(), to, subject, text);
+    }
+
+    @PostMapping("/send/roles")
+    public void sendVerificationEmailToRoles(Principal principal, @RequestParam List<Integer> to, @RequestParam String subject, @RequestParam String text) throws MessagingException {
+        emailService.sendHtmlMailToRoles(principal.getName(), text, subject, to);
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -92,5 +93,18 @@ public class UserService implements UserDetailsService {
         existingUser.setRole(roleService.getRole(userDto.getRole()));
         return userRepository.save(existingUser);
     }
+
+
+    public List<String> getEmailsByRoleId(List<Integer> roleId) {
+        List<User> users = userRepository.findUsersByRoleIdIn(roleId);
+                List<String> emails = users.stream()
+                        .map(User::getEmail)
+                        .collect(Collectors.toList());
+        return emails;
+    }
+
+
+
+
 
 }
