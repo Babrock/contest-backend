@@ -59,4 +59,8 @@ public class UserController {
         return userService.updateUser(email, userDto);
     }
 
+    @GetMapping("/roles/{roleId}")
+    public List<String> getEmailsByRoleId(@PathVariable List<Integer> roleId){
+        return userService.getEmailsByRoleId(roleId);
+    }
 }
