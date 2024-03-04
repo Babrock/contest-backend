@@ -23,4 +23,8 @@ public class CategoryService {
         return categoryRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                 "Category with given id not found"));
     }
+
+    public Category saveCategory(Category category) {
+        return categoryRepository.save(category);
+    }
 }

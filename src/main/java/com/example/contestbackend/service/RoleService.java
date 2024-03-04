@@ -23,7 +23,7 @@ public class RoleService {
                 "Role with given id not found"));
     }
 
-    public Role save(Role role) {
+    public Role saveRole(Role role) {
         return roleRepository.save(role);
     }
 

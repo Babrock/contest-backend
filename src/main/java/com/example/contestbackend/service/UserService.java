@@ -97,6 +97,7 @@ public class UserService implements UserDetailsService {
 
     public List<String> getEmailsByRoleId(List<Integer> roleId) {
         List<User> users = userRepository.findUsersByRoleIdIn(roleId);
+
                 List<String> emails = users.stream()
                         .map(User::getEmail)
                         .collect(Collectors.toList());

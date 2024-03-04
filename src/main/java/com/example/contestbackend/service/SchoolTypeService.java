@@ -1,7 +1,6 @@
 package com.example.contestbackend.service;
 
 import com.example.contestbackend.model.SchoolType;
-import com.example.contestbackend.model.Title;
 import com.example.contestbackend.repository.SchoolTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,5 +24,9 @@ public class SchoolTypeService {
 
     public SchoolType saveSchoolType(SchoolType schoolType) {
         return schoolTypeRepository.save(schoolType);
+    }
+
+    public List<SchoolType> getSchoolTypeByCategoryId(Integer categoryId){
+        return schoolTypeRepository.findAllByCategoryId(categoryId);
     }
 }

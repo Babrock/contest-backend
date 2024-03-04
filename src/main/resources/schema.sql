@@ -79,7 +79,9 @@
 # create table if not exists type_of_schools
 # (
 #     id_type_of_school int auto_increment primary key,
-#     name              varchar(50) unique not null
+#     name              varchar(50) unique not null,
+#     id_category int not null,
+#     foreign key (id_category) references categories (id_category)
 # );
 #
 # create table if not exists users

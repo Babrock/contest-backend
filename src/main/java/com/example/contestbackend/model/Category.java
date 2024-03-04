@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "categories")
 public class Category {
@@ -16,4 +17,6 @@ public class Category {
     @Column(name = "id_category")
     private Integer id;
     private String name;
+
+
 }
