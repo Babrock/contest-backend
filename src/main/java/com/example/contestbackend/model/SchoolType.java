@@ -17,4 +17,8 @@ public class SchoolType {
     @Column(name = "id_type_of_school")
     private Integer id;
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "id_category")
+    private Category category;
 }

@@ -4,6 +4,7 @@ import com.example.contestbackend.model.SchoolType;
 import com.example.contestbackend.service.SchoolTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,5 +19,10 @@ public class SchoolTypeController {
     @GetMapping
     public List<SchoolType> getAllSchoolTypes(){
         return schoolTypeService.getSchoolTypes();
+    }
+
+    @GetMapping("/{id}")
+    public List<SchoolType> getSchoolTypesByCategoryId(@PathVariable Integer id){
+        return schoolTypeService.getSchoolTypeByCategoryId(id);
     }
 }

@@ -32,6 +32,7 @@ public class RSPOService {
     private final CityService cityService;
     private final LanguageService languageService;
     private final SchoolTypeService schoolTypeService;
+    private final CategoryService categoryService;
     private final PasswordEncoder passwordEncoder;
     private final UtilsDataService utilsDataService;
 
@@ -40,6 +41,7 @@ public class RSPOService {
         if (!utilsDataService.isSchoolsDownloaded()) {
             saveTitles();
             saveLanguages();
+            saveCategories();
             saveTypesOfSchools();
             saveRoles();
             createAdmins();
@@ -69,22 +71,36 @@ public class RSPOService {
             languageService.saveLanguage(language);
         }
     }
+    private void saveCategories(){
+        String[] categories = {"JUNIOR", "SENIOR"};
+        for(String categoryName : categories){
+            Category category = new Category();
+            category.setName(categoryName);
+            categoryService.saveCategory(category);
+        }
+    }
 
     private void saveTypesOfSchools(){
         String[] schoolsTypes = {"Podstawowa Klasy V", "Podstawowa Klasy VI", "Podstawowa Klasy VIII", "Licea Klasy I", "Technika Klasy I"};
-        for (String schoolTypeName : schoolsTypes) {
+        for (int i = 0; i < schoolsTypes.length; i++) {
             SchoolType schoolType = new SchoolType();
-            schoolType.setName(schoolTypeName);
+            schoolType.setName(schoolsTypes[i]);
+            if (i < 3) {
+                schoolType.setCategory(categoryService.getCategory(1));
+            } else {
+                schoolType.setCategory(categoryService.getCategory(2));
+            }
             schoolTypeService.saveSchoolType(schoolType);
         }
     }
+
 
     private void saveRoles(){
         String[] roles = {"ROLE_ADMIN", "ROLE_COORDINATOR", "ROLE_COORDINATOR_REGION", "ROLE_COORDINATOR_SCHOOL"};
         for (String roleName : roles) {
             Role role = new Role();
             role.setName(roleName);
-            roleService.save(role);
+            roleService.saveRole(role);
         }
     }
 
