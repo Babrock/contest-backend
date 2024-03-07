@@ -1,3 +1,7 @@
+wrapper {
+    gradleVersion = '6.8.3'  // or another version compatible with Java 7
+}
+
 compileJava {
     options.fork = true
     options.forkOptions.executable = 'javac'
